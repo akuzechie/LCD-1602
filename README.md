@@ -1,4 +1,4 @@
-# LCD 1602
+# 16x2 LCD
 List of public functions:
 1. InitLCD(): Initialize 16x2 LCD
 2. writeByte(): send command or data byte to LCD
