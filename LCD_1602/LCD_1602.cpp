@@ -44,7 +44,6 @@ void LCD_1602::writeText(unsigned char text[])
   while(text[i] != '\0')
   {
       writeByte(1, text[i]); i++;
-      delay(100);
   }
 }
 //========================================================================
