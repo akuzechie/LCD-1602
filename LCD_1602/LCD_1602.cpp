@@ -49,14 +49,24 @@ void LCD_1602::writeText(unsigned char text[])
 //========================================================================
 void LCD_1602::writeByte(byte rs, unsigned char byteValue)
 {
-  PORTD = byteValue & 0xF0;       /*mask & o/p high nibble of cmd or data*/
+  byte nibbleHigh = (byteValue & 0xF0) >> 4;/*extract & send high nibble*/
+  digitalWrite(_D4, nibbleHigh & 0b00000001);
+  digitalWrite(_D5, nibbleHigh & 0b00000010);
+  digitalWrite(_D6, nibbleHigh & 0b00000100);
+  digitalWrite(_D7, nibbleHigh & 0b00001000);
+  //----------------------------------------------------------------
   digitalWrite(_RS, rs);          /*RS = 0 (command) RS = 1 (data)*/
   digitalWrite(_EN, HIGH);        /*EN = 1*/
   delay_short();                  /*widen EN pulse*/
   digitalWrite(_EN, LOW);         /*EN = 0*/
   delay_us();
   //----------------------------------------------------------------------
-  PORTD = (byteValue << 4) & 0xF0;/*mask & o/p low nibble of cmd or data*/
+  byte nibbleLow = (byteValue & 0x0F);/*extract & send low nibble*/
+  digitalWrite(_D4, nibbleLow & 0b00000001);
+  digitalWrite(_D5, nibbleLow & 0b00000010);
+  digitalWrite(_D6, nibbleLow & 0b00000100);
+  digitalWrite(_D7, nibbleLow & 0b00001000);
+  //----------------------------------------------------------------
   digitalWrite(_EN, HIGH);        /*EN = 1*/
   delay_short();                  /*widen EN pulse*/
   digitalWrite(_EN, LOW);         /*EN = 0*/
